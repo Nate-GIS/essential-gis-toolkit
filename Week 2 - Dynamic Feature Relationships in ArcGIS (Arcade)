@@ -1,0 +1,25 @@
+/*
+Automatically creates a feature relationship using an intersecting feature.
+This field must be GUID data type.
+To use, paste this code into an arcade calculated expression for a field in ArcGIS Field Maps Designer.
+
+Created by Nathan Ryan
+Please give attribution!
+*/
+
+// Variable. Edit me!
+var parentmaplayer = "Planned Developments" 
+
+// Get intersecting matches
+var polyLayer = FeatureSetByName($map, parentmaplayer, ["globalid"], true)
+var matches = Intersects(Centroid($feature, "labelPoint"), polyLayer)
+
+// If no matches
+if (count(matches) == 0){
+  return(null)
+}
+
+// If match, return first
+else{
+  return(First(matches).globalid)
+}
