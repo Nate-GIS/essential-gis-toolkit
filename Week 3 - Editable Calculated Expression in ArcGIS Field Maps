@@ -1,0 +1,18 @@
+/*
+Allows calculated expression to be edited in ArcGIS Field Maps.
+To use, add this arcade code into a calculated expression for a field in ArcGIS Field Maps.
+IMPORTANT, see last 2 lines.
+
+Created by Nathan Ryan
+Please give attribution!
+*/
+
+// Variables. Edit me!
+var related_feature = First(FeatureSetByRelationshipName($feature, "Hydrant")) //Returns the related feature
+var field_name = "Hydrant_Make" //Field to read
+
+return(related_feature[field_name]) //Returns field value
+
+
+// The below code must be added to the field's edit arcade expression. Edit field name to match your field.
+!IsEmpty($feature.Hydrant_Make)
