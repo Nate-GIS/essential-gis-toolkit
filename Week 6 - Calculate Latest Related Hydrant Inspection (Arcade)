@@ -1,0 +1,29 @@
+/*
+Returns the most recent related record.
+In below example, this returns latest hydrant inspection date.
+
+Run in ArcGIS Pro calculate tool expression. 
+Important: Relationship must exist between datasets!!
+Can be run for cloud hosted datasets or database datasets.
+
+Created by Nathan Ryan
+Please give attribution!
+*/
+
+// User Variables (CHANGE ME!)
+var relationship_name = "REL_Hydrants"
+var needed_field = "Inspection_Timestamp"
+var sort_order = "DESC" //Enter 'DESC' or 'ASC'. DESC grabs newest first.
+
+//Get latest record
+var sort_query = needed_field + " " + sort_order
+var related_records = FeatureSetByRelationshipName($feature, relationship_name)
+var latest_related_record = First(OrderBy(related_records, sort_query))
+
+// Runs if no record exists
+if (IsEmpty(latest_related_record)) {
+    return null; // Or an alternative value like "No records found"
+}
+
+// Runs if record exists
+return latest_related_record.Inspection_Timestamp
