@@ -1,0 +1,50 @@
+'''
+Retrieves all maps that contains a user specified layer.
+
+Works in ArcGIS Online and ArcGIS Enterprise Portal.
+
+Created by Nathan Ryan
+Please give attribution!
+'''
+
+from arcgis.gis import GIS
+
+# User Variables (CHANGE ME!)
+search_itemid = "c57b82c4d3d54fe8a95c6c1a0944984a" # ItemID of layer to look for.
+search_user = "" # Input username. Change to "" to search all users.
+portal = "https://www.arcgis.com" #Input ArcGIS Online/Enterprise domain.
+username = "Enter_Username"
+password = "Enter_Password"
+
+# Search for Maps
+gis = GIS(portal, username, password)
+if search_user == "":
+    web_maps = gis.content.search(query=f"type:Web Map", max_items=1000, outside_org=False)
+else:
+    web_maps = gis.content.search(query=f"type:Web Map AND owner:{search_user}", max_items=1000, outside_org=False)
+matches = []
+
+# Read Maps
+for wm in web_maps:
+    try:
+        wm_data = wm.get_data()
+        layers = wm_data.get("operationalLayers", [])
+        # Read Layers in Map
+        for lyr in layers:
+            if lyr.get("itemId") == search_itemid:
+                matches.append(wm)
+                break
+    # Print Error
+    except Exception as e:
+        print(f"Could not read map {wm.title}: {e}")
+
+# Print Results
+for m in matches:
+    print(f"{m.title} | Owner: {m.owner} | ID: {m.id}")
+print(f"\nTotal maps using the layer: {len(matches)}")
+
+
+
+
+
+
