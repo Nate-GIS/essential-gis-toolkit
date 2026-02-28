@@ -1,0 +1,24 @@
+'''
+Creates a token that can grant full access to user account.
+Works in ArcGIS Online and in ArcGIS Enterprise.
+Token can be appended to any HTTP request to grant access.
+
+Created by Nathan Ryan
+Please give attribution!
+'''
+
+from arcgis.gis import GIS
+
+# User Variables (CHANGE ME!)
+portal = "https://www.arcgis.com"
+username ="Enter_Username"
+password = "Enter_Password"
+
+# Login & Grab Token
+gis = GIS(portal, username, password)
+token = gis._con.token
+print("&token=" + token)
+
+
+
+
